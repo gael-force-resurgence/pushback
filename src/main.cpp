@@ -241,16 +241,16 @@ controller Controller(primary);
 
 void pistonControl() {
     while (true) {
-        if (Controller.ButtonX.pressing()) {
-            while (Controller.ButtonX.pressing()) {
+        if (Controller.ButtonUp.pressing()) {
+            while (Controller.ButtonUp.pressing()) {
                 wait(20, msec);
             }
 
             Wedge.set(!Wedge.value());
         };
 
-        if (Controller.ButtonUp.pressing()) {
-            while (Controller.ButtonUp.pressing()) {
+        if (Controller.ButtonX.pressing()) {
+            while (Controller.ButtonX.pressing()) {
                 wait(20, msec);
             }
 
@@ -270,24 +270,16 @@ void usercontrol(void) {
         // Intake control
         if (Controller.ButtonR2.pressing()) {
             // Intake FULL
-            FrontstageRoller.spin(fwd, 100, pct);
-            BackstageRoller.spin(fwd, 100, pct);
-            ScoringRoller.spin(fwd, 100, pct);
+            intake.spin(IN, 100);
         } else if (Controller.ButtonR1.pressing()) {
             // Intake STORAGE
-            FrontstageRoller.spin(fwd, 100, pct);
-            BackstageRoller.spin(fwd, 100, pct);
-            ScoringRoller.stop(hold);
+            intake.spin(IN_STORAGE, 100);
         } else if (Controller.ButtonL2.pressing()) {
             // Outtake FULL
-            FrontstageRoller.spin(fwd, -100, pct);
-            BackstageRoller.spin(fwd, -100, pct);
-            ScoringRoller.spin(fwd, -100, pct);
+            intake.spin(OUT, 100);
         } else {
             // Stop rollers
-            FrontstageRoller.stop(coast);
-            BackstageRoller.stop(coast);
-            ScoringRoller.stop(coast);
+            intake.stop();
         }
 
         wait(20, msec);

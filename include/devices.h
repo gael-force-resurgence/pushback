@@ -3,9 +3,10 @@
 using namespace vex;
 
 enum IntakeState {
-    IN_FULL,
+    IN,
     IN_STORAGE,
-    OUT_FULL
+    OUT,
+    OFF
 };
 
 class Intake {
@@ -13,32 +14,40 @@ class Intake {
     vex::motor FrontstageRoller, BackstageRoller, ScoringRoller;
 
    public:
-    Intake(motor frontstage, motor back, motor scoring) : FrontstageRoller(frontstage), BackstageRoller(back), ScoringRoller(scoring) {};
-
-    inline void setState(IntakeState state) {
-        switch (state) {
-            case IN_FULL:
-                FrontstageRoller.spin(fwd, 100, pct);
-                BackstageRoller.spin(fwd, 100, pct);
-                ScoringRoller.spin(fwd, 100, pct);
-                break;
-            case IN_STORAGE:
-                FrontstageRoller.spin(fwd, 100, pct);
-                BackstageRoller.spin(fwd, 100, pct);
-                ScoringRoller.stop(hold);
-                break;
-            case OUT_FULL:
-                FrontstageRoller.spin(fwd, -100, pct);
-                BackstageRoller.spin(fwd, -100, pct);
-                ScoringRoller.spin(fwd, -100, pct);
-                break;
-        }
-    };
+    Intake(motor frontstage, motor back, motor scoring)
+        : FrontstageRoller(frontstage), BackstageRoller(back), ScoringRoller(scoring) {};
 
     /**
-     * Starts the intake control thread.
+     * @brief Spins the intake rollers based on the specified state and speed.
+     * @param state The desired intake state (IN, IN_STORAGE, OUT, STOP).
+     * @param speed The speed at which to spin the rollers (percentage).
      */
-    inline void startThread() {
+    inline void spin(IntakeState state, float speed) {
+        switch (state) {
+            case IN:
+                FrontstageRoller.spin(fwd, speed, pct);
+                BackstageRoller.spin(fwd, speed, pct);
+                ScoringRoller.spin(fwd, speed, pct);
+                break;
+            case IN_STORAGE:
+                FrontstageRoller.spin(fwd, speed, pct);
+                BackstageRoller.spin(fwd, speed, pct);
+                ScoringRoller.stop(hold);
+                break;
+            case OUT:
+                FrontstageRoller.spin(fwd, -speed, pct);
+                BackstageRoller.spin(fwd, -speed, pct);
+                ScoringRoller.spin(fwd, -speed, pct);
+                break;
+            case STOP:
+                this->stop();
+                break;
+        };
+    };
 
+    inline void stop() {
+        FrontstageRoller.stop(hold);
+        BackstageRoller.stop(hold);
+        ScoringRoller.stop(hold);
     };
 };
