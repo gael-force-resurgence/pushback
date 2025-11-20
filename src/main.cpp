@@ -38,7 +38,7 @@ Drive chassis(
     // HOLONOMIC_TWO_ROTATION
     //
     // Write it here:
-    TANK_ONE_SIDEWAYS_ROTATION,
+    ZERO_TRACKER_ODOM,
 
     // Add the names of your Drive motors into the motor groups below, separated by commas, i.e. motor_group(Motor1,Motor2,Motor3).
     // You will input whatever motor names you chose when you configured your robot using the sidebar configurer, they don't have to be "Motor1" and "Motor2".
@@ -101,20 +101,10 @@ Drive chassis(
     2,
 
     // Sideways tracker center distance (positive distance is behind the center of the robot, negative is in front):
-    2.5
-
-);
+    2.5);
 
 int current_auton_selection = 0;
 bool auto_started = false;
-
-/**
- * Function before autonomous. It prints the current auton number on the screen
- * and tapping the screen cycles the selected auton by 1. Add anything else you
- * may need, like resetting pneumatic components. You can rename these autons to
- * be more descriptive, if you like.
- */
-
 void pre_auton() {
     // Initializing Robot Configuration. DO NOT REMOVE!
     vexcodeInit();
@@ -126,6 +116,7 @@ void pre_auton() {
         Brain.Screen.printAt(5, 40, "Battery Percentage:");
         Brain.Screen.printAt(5, 60, "%d", Brain.Battery.capacity());
         Brain.Screen.printAt(5, 80, "X: %.2f, Y: %.2f Theta: %.2f", chassis.get_X_position(), chassis.get_Y_position(), chassis.get_absolute_heading());
+
         Brain.Screen.printAt(5, 120, "Selected Auton:");
         switch (current_auton_selection) {
             case 0:
@@ -155,6 +146,7 @@ void pre_auton() {
         }
         if (Brain.Screen.pressing()) {
             while (Brain.Screen.pressing()) {
+                wait(20, msec);
             }
             current_auton_selection++;
         } else if (current_auton_selection == 8) {
@@ -164,77 +156,12 @@ void pre_auton() {
     }
 }
 
-/**
- * Auton function, which runs the selected auton. Case 0 is the default,
- * and will run in the brain screen goes untouched during preauton. Replace
- * drive_test(), for example, with your own auton function you created in
- * autons.cpp and declared in autons.h.
- */
-
-void intake_thread_1() {
-    FrontstageRoller.spin(fwd, 100, pct);
-    BackstageRoller.spin(fwd, 100, pct);
-    ScoringRoller.spin(fwd, 50, pct);
-    wait(500, msec);
-    FrontstageRoller.stop();
-    BackstageRoller.stop();
-    ScoringRoller.stop();
-};
-
 void autonomous(void) {
     auto_started = true;
 
     vex::thread odom_thread = vex::thread(odom_test);
 
-    chassis.drive_distance(22, 0, 7, 5, 0.5, 300, 3000);
-    chassis.turn_to_angle(-90);
-    Scoring.open();
-    chassis.drive_distance(14);
-    FrontstageRoller.spin(fwd, 100, pct);
-    BackstageRoller.spin(fwd, 100, pct);
-    ScoringRoller.spin(fwd, 100, pct);
-
-    // chassis.right_swing_to_angle(-37);
-    // FrontstageRoller.spin(fwd, 100, pct);
-    // BackstageRoller.spin(fwd, 100, pct);
-    // ScoringRoller.spin(fwd, 100, pct);
-    // chassis.drive_distance(13, -40, 10, 6, 1.5, 100, 2000);
-    // Wedge.open();
-    // return;
-    // chassis.left_swing_to_angle(50);
-    // chassis.drive_distance(8);
-    // FrontstageRoller.spin(fwd, 100, pct);
-    // BackstageRoller.spin(fwd, 100, pct);
-    // ScoringRoller.spin(fwd, 100, pct);
-
     return;
-
-    // switch (current_auton_selection) {
-    //     case 0:
-    //         drive_test();
-    //         break;
-    //     case 1:
-    //         drive_test();
-    //         break;
-    //     case 2:
-    //         turn_test();
-    //         break;
-    //     case 3:
-    //         swing_test();
-    //         break;
-    //     case 4:
-    //         full_test();
-    //         break;
-    //     case 5:
-    //         odom_test();
-    //         break;
-    //     case 6:
-    //         tank_odom_test();
-    //         break;
-    //     case 7:
-    //         holonomic_odom_test();
-    //         break;
-    // }
 }
 
 controller Controller(primary);

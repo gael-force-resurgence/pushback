@@ -1,5 +1,9 @@
 #pragma once
-#include "vex.h"
+#include "odom.h"
+#include "v5.h"
+#include "v5_vcs.h"
+
+using namespace vex;
 
 enum drive_setup { ZERO_TRACKER_NO_ODOM,
                    ZERO_TRACKER_ODOM,
