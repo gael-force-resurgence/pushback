@@ -13,13 +13,13 @@ motor Right1 = motor(PORT8, ratio18_1, false);
 motor Right2 = motor(PORT9, ratio18_1, false);
 motor Right3 = motor(PORT10, ratio18_1, false);
 
-motor FrontstageRoller = motor(PORT6, ratio6_1, true);
+motor FrontstageRoller = motor(PORT5, ratio6_1, false);
 // motor BackstageRoller = motor(PORT12, ratio6_1, true);
 motor ScoringRoller = motor(PORT13, ratio6_1, false);
 
 Intake intake = Intake(FrontstageRoller, ScoringRoller);
 
-pneumatics Wedge = pneumatics(Brain.ThreeWirePort.A);
+pneumatics Wedge = pneumatics(Brain.ThreeWirePort.H);
 pneumatics Scoring = pneumatics(Brain.ThreeWirePort.C);
 
 void vexcodeInit(void) {};

@@ -1,6 +1,10 @@
 #include "devices.h"
 
+#include <math.h>
+#include <stdio.h>
+
 void Intake::spin(IntakeState state, float speed) {
+    this->currentState = state;
     switch (state) {
         case IN:
             FrontstageRoller.spin(fwd, speed, pct);
@@ -18,7 +22,50 @@ void Intake::spin(IntakeState state, float speed) {
             ScoringRoller.spin(fwd, -speed, pct);
             break;
         case STOP:
-            this->stop();
+            FrontstageRoller.stop(hold);
+            ScoringRoller.stop(hold);
             break;
+    };
+};
+
+double abs(double value) {
+    if (value < 0) {
+        return -value;
+    } else {
+        return value;
+    };
+}
+
+void Intake::unjam() {
+    if (abs(FrontstageRoller.velocity(pct)) < 5) {
+        if (this->currentState == IN) {
+            FrontstageRoller.spin(fwd, -100, pct);
+            ScoringRoller.spin(fwd, -100, pct);
+
+            wait(500, msec);
+
+            FrontstageRoller.spin(fwd, 100, pct);
+            ScoringRoller.spin(fwd, 100, pct);
+
+            wait(500, msec);
+        } else if (this->currentState == IN_STORAGE) {
+            FrontstageRoller.spin(fwd, -100, pct);
+
+            wait(500, msec);
+
+            FrontstageRoller.spin(fwd, 100, pct);
+
+            wait(500, msec);
+        } else if (this->currentState == OUT) {
+            FrontstageRoller.spin(fwd, 100, pct);
+            ScoringRoller.spin(fwd, 100, pct);
+
+            wait(500, msec);
+
+            FrontstageRoller.spin(fwd, -100, pct);
+            ScoringRoller.spin(fwd, -100, pct);
+
+            wait(500, msec);
+        }
     };
 };

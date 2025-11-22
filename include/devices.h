@@ -14,8 +14,10 @@ enum IntakeState {
 class Intake {
    private:
     vex::motor FrontstageRoller, ScoringRoller;
+    IntakeState currentState;
 
    public:
+    bool antiJamEnabled = true;
     Intake(motor frontstage, motor scoring)
         : FrontstageRoller(frontstage), ScoringRoller(scoring) {};
 
@@ -26,9 +28,9 @@ class Intake {
      */
     void spin(IntakeState state, float speed);
 
+    void unjam();
+
     inline void stop() {
-        FrontstageRoller.stop(hold);
-        // BackstageRoller.stop(hold);
-        ScoringRoller.stop(hold);
+        this->spin(STOP, 0);
     };
 };

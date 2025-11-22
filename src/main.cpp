@@ -2,6 +2,7 @@
 
 using namespace vex;
 competition Competition;
+controller Controller;
 
 /*---------------------------------------------------------------------------*/
 /*                             VEXcode Config                                */
@@ -156,15 +157,30 @@ void pre_auton() {
     }
 }
 
+void anti_jam_thread_f() {
+    while (Competition.isAutonomous()) {
+        intake.unjam();
+
+        wait(20, msec);
+    }
+};
+
 void autonomous(void) {
     auto_started = true;
 
     vex::thread odom_thread = vex::thread(odom_test);
+    // vex::thread anti_jam_thread = vex::thread(anti_jam_thread_f);
+
+    left1();
+
+    // intake.spin(IN, 100);
+
+    // wait(1000, msec);
+    // // intake.unjam();
+    // wait(3000, msec);
 
     return;
 }
-
-controller Controller(primary);
 
 void pistonControl() {
     while (true) {

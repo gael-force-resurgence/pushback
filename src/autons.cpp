@@ -52,41 +52,30 @@ void odom_test() {
 #define PRINT_COORDS \
     printf("X: %.2f, Y: %.2f, Theta: %.2f\n", chassis.get_X_position(), chassis.get_Y_position(), chassis.get_absolute_heading());
 
-void red_solo_awp() {
+// AUTONS
+
+void left1() {
     default_constants();
 
+    chassis.drive_distance(19.5, 0, 10, 6, 1, 400, 2000);
+    chassis.turn_to_angle(-90, 9, 1, 200, 2000);
+    chassis.drive_distance(-4, -90, 10, 6, 1, 200, 2000);
     Wedge.open();
-    chassis.drive_distance(20, 0, 12, 6, 1.5, 100, 2000);
-    chassis.turn_to_angle(90);
-    chassis.drive_distance(-5, 90, 12, 6, 1.5, 100, 2000);
-    FrontstageRoller.spin(fwd, 100, pct);
-    BackstageRoller.spin(fwd, 100, pct);
-    ScoringRoller.spin(fwd, 100, pct);
-    chassis.drive_distance(20, 90, 12, 6, 1.5, 100, 2000);
-    chassis.drive_distance(-3, 90, 5, 6, 1.5, 100, 2000);
-
-    chassis.drive_stop(hold);
-};
-
-void blue_solo_awp() {
-    default_constants();
-
-    Wedge.open();
-    chassis.drive_distance(20, 0, 12, 6, 1.5, 100, 2000);
-    chassis.turn_to_angle(-90);
-    chassis.drive_distance(-5, -90, 12, 6, 1.5, 100, 2000);
-    FrontstageRoller.spin(fwd, 100, pct);
-    BackstageRoller.spin(fwd, 100, pct);
-    ScoringRoller.spin(fwd, 100, pct);
-    chassis.drive_distance(20, -90, 12, 6, 1.5, 100, 1000);
-    chassis.drive_distance(-2, -90, 5, 6, 1.5, 100, 2000);
     wait(500, msec);
-    FrontstageRoller.stop();
-    BackstageRoller.stop(hold);
-    ScoringRoller.stop(hold);
-    chassis.drive_distance(-10, -90, 5, 6, 1.5, 100, 2000);
-    chassis.turn_to_angle(90);
-    chassis.drive_distance(10, 90, 8, 6, 1.5, 100, 2000);
+    intake.spin(IN_STORAGE, 100);
+    chassis.drive_distance(12, -90, 6, 6, 1, 200, 1000);
+    chassis.drive_distance(-0.5, -90, 4, 6, 0.25, 200, 500);
+    wait(500, msec);
+    intake.stop();
+    chassis.drive_distance(-13, -100, 10, 6, 1, 200, 2000);
+    Wedge.close();
+    chassis.right_swing_to_angle(-90);
+    chassis.drive_distance(-10, -90, 10, 6, 1, 200, 1700);
+    chassis.drive_distance(0.5, -90, 10, 6, 0.2, 200, 400);
 
-    chassis.drive_stop(hold);
+    intake.spin(IN, 100);
+
+    // chassis.drive_stop(hold);
+    // wait(200, msec);
+    // chassis.drive_stop(coast);
 };

@@ -4,7 +4,13 @@
 	],
 	"C_Cpp.errorSquiggles": "disabled",
 	"files.associations": {
-		"vex.h": "vex"
+		"*.page-template": "vue",
+		"*.layout-template": "vue",
+		"*.vue": "vue",
+		"vex.h": "vex",
+		"cmath": "cpp",
+		"cstdlib": "cpp",
+		"istream": "cpp"
 	},
 	"[vex]": {
 		"editor.formatOnSave": false
