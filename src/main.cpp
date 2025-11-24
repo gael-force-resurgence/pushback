@@ -161,7 +161,7 @@ void anti_jam_thread_f() {
     while (Competition.isAutonomous()) {
         intake.unjam();
 
-        wait(20, msec);
+        wait(500, msec);
     }
 };
 
@@ -171,7 +171,10 @@ void autonomous(void) {
     vex::thread odom_thread = vex::thread(odom_test);
     // vex::thread anti_jam_thread = vex::thread(anti_jam_thread_f);
 
-    left1();
+    // left1();
+
+    chassis.drive_distance(5, 0, 7, 6, 1, 200, 2000);
+    chassis.drive_stop(hold);
 
     // intake.spin(IN, 100);
 

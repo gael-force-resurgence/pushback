@@ -11,8 +11,8 @@
 void default_constants() {
     // Each constant set is in the form of (maxVoltage, kP, kI, kD, startI).
     chassis.set_drive_constants(10, 1.5, 0, 10, 0);
-    chassis.set_heading_constants(6, .42, 0, 5, 0);
-    chassis.set_turn_constants(12, .4, .03, 4.5, 15);
+    chassis.set_heading_constants(6, .50, 0, 4.8, 0);
+    chassis.set_turn_constants(12, .4, .03, 4.7, 15);
     chassis.set_swing_constants(12, .45, .001, 1.7, 8);
 
     // Each exit condition set is in the form of (settle_error, settle_time, timeout).
@@ -57,25 +57,34 @@ void odom_test() {
 void left1() {
     default_constants();
 
-    chassis.drive_distance(19.5, 0, 10, 6, 1, 400, 2000);
+    PRINT_COORDS
+
+    chassis.drive_distance(18.5, 0, 8, 6, 1, 200, 2800);
     chassis.turn_to_angle(-90, 9, 1, 200, 2000);
-    chassis.drive_distance(-4, -90, 10, 6, 1, 200, 2000);
+    chassis.drive_distance(-4, -90, 10, 6, 1, 200, 1500);
+    intake.spin(IN_STORAGE, 80);
     Wedge.open();
     wait(500, msec);
-    intake.spin(IN_STORAGE, 100);
-    chassis.drive_distance(12, -90, 6, 6, 1, 200, 1000);
-    chassis.drive_distance(-0.5, -90, 4, 6, 0.25, 200, 500);
+
+    chassis.drive_distance(12, -90, 8, 6, 1, 200, 1000);
+    chassis.drive_distance(-2, -90, 4, 6, 0.25, 200, 500);
+    chassis.drive_distance(3, -90, 10, 6, 1, 200, 500);
+
     wait(500, msec);
+    chassis.drive_distance(-8.5, -100, 8, 6, 1, 200, 2000);
+
+    intake.antiJamEnabled = true;
+    chassis.left_swing_to_angle(-95);
+
+    chassis.drive_distance(-9, -90, 7, 6, 1, 400, 2000);
     intake.stop();
-    chassis.drive_distance(-13, -100, 10, 6, 1, 200, 2000);
+    chassis.right_swing_to_angle(-92);
+
+    intake.spin(IN, 80);
+
+    chassis.drive_stop(hold);
+    wait(670, msec);
+    chassis.drive_stop(coast);
+
     Wedge.close();
-    chassis.right_swing_to_angle(-90);
-    chassis.drive_distance(-10, -90, 10, 6, 1, 200, 1700);
-    chassis.drive_distance(0.5, -90, 10, 6, 0.2, 200, 400);
-
-    intake.spin(IN, 100);
-
-    // chassis.drive_stop(hold);
-    // wait(200, msec);
-    // chassis.drive_stop(coast);
 };

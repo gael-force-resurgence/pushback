@@ -17,7 +17,7 @@ class Intake {
     IntakeState currentState;
 
    public:
-    bool antiJamEnabled = true;
+    bool antiJamEnabled = false;
     Intake(motor frontstage, motor scoring)
         : FrontstageRoller(frontstage), ScoringRoller(scoring) {};
 

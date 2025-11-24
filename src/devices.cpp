@@ -37,12 +37,18 @@ double abs(double value) {
 }
 
 void Intake::unjam() {
-    if (abs(FrontstageRoller.velocity(pct)) < 5) {
+    if (abs(FrontstageRoller.velocity(pct)) < 3 && this->antiJamEnabled) {
+        printf("Unjamming intake... %f\n", FrontstageRoller.velocity(pct));
+        wait(500, msec);
+        if (abs(FrontstageRoller.velocity(pct)) >= 3) {
+            return;
+        }
+
         if (this->currentState == IN) {
             FrontstageRoller.spin(fwd, -100, pct);
             ScoringRoller.spin(fwd, -100, pct);
 
-            wait(500, msec);
+            wait(400, msec);
 
             FrontstageRoller.spin(fwd, 100, pct);
             ScoringRoller.spin(fwd, 100, pct);
@@ -51,7 +57,7 @@ void Intake::unjam() {
         } else if (this->currentState == IN_STORAGE) {
             FrontstageRoller.spin(fwd, -100, pct);
 
-            wait(500, msec);
+            wait(400, msec);
 
             FrontstageRoller.spin(fwd, 100, pct);
 
@@ -60,7 +66,7 @@ void Intake::unjam() {
             FrontstageRoller.spin(fwd, 100, pct);
             ScoringRoller.spin(fwd, 100, pct);
 
-            wait(500, msec);
+            wait(400, msec);
 
             FrontstageRoller.spin(fwd, -100, pct);
             ScoringRoller.spin(fwd, -100, pct);
